@@ -34,6 +34,8 @@ import com.google.common.io.ByteStreams;
 import com.google.common.io.Files;
 import com.google.gson.Gson;
 import com.vdurmont.semver4j.Semver;
+
+import java.awt.*;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -56,7 +58,8 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
-import javax.swing.JButton;
+import javax.swing.*;
+
 import joptsimple.ArgumentAcceptingOptionSpec;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
@@ -68,31 +71,35 @@ import org.slf4j.LoggerFactory;
 @Slf4j
 public class Launcher
 {
-	private static final File RUNELITE_DIR = new File(System.getProperty("user.home"), ".runelite");
+	public static final String OPENOSRS = ".openosrs";
+	public static final File RUNELITE_DIR = new File(System.getProperty("user.home"), OPENOSRS);
 	private static final File LOGS_DIR = new File(RUNELITE_DIR, "logs");
 	private static final File REPO_DIR = new File(RUNELITE_DIR, "repository2");
 	private static final File CRASH_FILES = new File(LOGS_DIR, "jvm_crash_pid_%p.log");
-	static final String LAUNCHER_BUILD = "https://raw.githubusercontent.com/open-osrs/launcher/master/build.gradle.kts";
-	private static final String CLIENT_BOOTSTRAP_STAGING_URL = "https://raw.githubusercontent.com/open-osrs/hosting/master/bootstrap-staging.json";
-	private static final String CLIENT_BOOTSTRAP_STABLE_URL = "https://raw.githubusercontent.com/open-osrs/hosting/master/bootstrap-openosrs.json";
+	static final String LAUNCHER_BUILD = "https://raw.githubusercontent.com/unethicalite/launcher/master/build.gradle.kts";
+	private static final String CLIENT_BOOTSTRAP_STAGING_URL = "https://raw.githubusercontent.com/unethicalite/hosting/master/bootstrap-staging.json";
+	private static final String CLIENT_BOOTSTRAP_STABLE_URL = "https://raw.githubusercontent.com/unethicalite/hosting/master/bootstrap-stable.json";
 	static final String USER_AGENT = "OpenOSRS/" + LauncherProperties.getVersion();
 	private static final boolean enforceDependencyHashing = true;
 	private static boolean nightly = false;
 	private static boolean staging = false;
 	private static boolean stable = true;
+	public static String GH_AUTH_TOKEN = "";
 
 	static final String CLIENT_MAIN_CLASS = "net.runelite.client.RuneLite";
 
 	public static void main(String[] args)
 	{
-		Properties prop = new Properties();
 
+		Properties prop = new Properties();
 		try
 		{
-			prop.load(new FileInputStream(new File(RUNELITE_DIR, "runeliteplus.properties")));
+			prop.load(new FileInputStream(new File(RUNELITE_DIR, "launcher.properties")));
+			GH_AUTH_TOKEN = (String) prop.get("ghtoken");
 		}
 		catch (IOException ignored)
 		{
+			GH_AUTH_TOKEN = requestGitHubAuthToken();
 		}
 
 		boolean askmode = Optional.ofNullable(prop.getProperty("openosrs.askMode")).map(Boolean::valueOf).orElse(true);
@@ -420,6 +427,7 @@ public class Launcher
 		log.info(String.valueOf(u));
 
 		URLConnection conn = u.openConnection();
+		conn.setRequestProperty ("Authorization", "Bearer " + GH_AUTH_TOKEN);
 
 		conn.setRequestProperty("User-Agent", USER_AGENT);
 
@@ -429,6 +437,9 @@ public class Launcher
 
 			Gson g = new Gson();
 			return g.fromJson(new InputStreamReader(new ByteArrayInputStream(bytes)), Bootstrap.class);
+		} catch (Exception e) {
+			GH_AUTH_TOKEN = requestGitHubAuthToken();
+			return getBootstrap();
 		}
 	}
 
@@ -492,6 +503,9 @@ public class Launcher
 
 			URL url = new URL(artifact.getPath());
 			URLConnection conn = url.openConnection();
+			if (artifact.getPath().contains("unethicalite")) {
+				conn.setRequestProperty ("Authorization", "Bearer " + GH_AUTH_TOKEN);
+			}
 			conn.setRequestProperty("User-Agent", USER_AGENT);
 			try (InputStream in = conn.getInputStream();
 				FileOutputStream fout = new FileOutputStream(dest))
@@ -611,4 +625,20 @@ public class Launcher
 
 		});
 	}
+
+	public static String requestGitHubAuthToken() {
+		JFrame tokenInputFrame = new JFrame();
+		String s = (String)JOptionPane.showInputDialog(
+				tokenInputFrame,
+				"GitHub Token:",
+				"GitHub Token",
+				JOptionPane.PLAIN_MESSAGE,
+				null,
+				null,
+				"token123"
+		);
+		tokenInputFrame.dispose();
+		return s;
+	}
+
 }
