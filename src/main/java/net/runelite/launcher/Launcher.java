@@ -100,6 +100,15 @@ public class Launcher
 		catch (IOException ignored)
 		{
 			GH_AUTH_TOKEN = requestGitHubAuthToken();
+			prop.setProperty("ghtoken", GH_AUTH_TOKEN);
+			try
+			{
+				prop.store(new FileOutputStream(new File(RUNELITE_DIR, "launcher.properties")), "Launcher configuration");
+			}
+			catch (IOException e)
+			{
+				log.warn("Failed to save launcher properties", e);
+			}
 		}
 
 		boolean askmode = Optional.ofNullable(prop.getProperty("openosrs.askMode")).map(Boolean::valueOf).orElse(true);
