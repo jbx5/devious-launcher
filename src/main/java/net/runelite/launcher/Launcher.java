@@ -35,7 +35,6 @@ import com.google.common.io.Files;
 import com.google.gson.Gson;
 import com.vdurmont.semver4j.Semver;
 
-import java.awt.*;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -80,7 +79,6 @@ public class Launcher
 	private static final String CLIENT_BOOTSTRAP_STAGING_URL = "https://raw.githubusercontent.com/unethicalite/hosting/master/bootstrap-staging.json";
 	private static final String CLIENT_BOOTSTRAP_STABLE_URL = "https://raw.githubusercontent.com/unethicalite/hosting/master/bootstrap-stable.json";
 	static final String USER_AGENT = "OpenOSRS/" + LauncherProperties.getVersion();
-	private static final boolean enforceDependencyHashing = true;
 	private static boolean nightly = false;
 	private static boolean staging = false;
 	private static boolean stable = true;
@@ -91,12 +89,13 @@ public class Launcher
 	{
 
 		Properties prop = new Properties();
-		try
+		try (var is = new FileInputStream(new File(RUNELITE_DIR, "launcher.properties")))
 		{
-			prop.load(new FileInputStream(new File(RUNELITE_DIR, "launcher.properties")));
+			prop.load(is);
 		}
 		catch (IOException ignored)
 		{
+			// ignored
 		}
 
 		boolean askmode = Optional.ofNullable(prop.getProperty("openosrs.askMode")).map(Boolean::valueOf).orElse(true);
