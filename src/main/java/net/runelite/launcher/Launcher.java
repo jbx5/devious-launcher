@@ -84,7 +84,6 @@ public class Launcher
 	private static boolean nightly = false;
 	private static boolean staging = false;
 	private static boolean stable = true;
-	public static String GH_AUTH_TOKEN = "";
 
 	static final String CLIENT_MAIN_CLASS = "net.runelite.client.RuneLite";
 
@@ -95,20 +94,9 @@ public class Launcher
 		try
 		{
 			prop.load(new FileInputStream(new File(RUNELITE_DIR, "launcher.properties")));
-			GH_AUTH_TOKEN = (String) prop.get("ghtoken");
 		}
 		catch (IOException ignored)
 		{
-			GH_AUTH_TOKEN = requestGitHubAuthToken();
-			prop.setProperty("ghtoken", GH_AUTH_TOKEN);
-			try
-			{
-				prop.store(new FileOutputStream(new File(RUNELITE_DIR, "launcher.properties")), "Launcher configuration");
-			}
-			catch (IOException e)
-			{
-				log.warn("Failed to save launcher properties", e);
-			}
 		}
 
 		boolean askmode = Optional.ofNullable(prop.getProperty("openosrs.askMode")).map(Boolean::valueOf).orElse(true);
@@ -436,7 +424,6 @@ public class Launcher
 		log.info(String.valueOf(u));
 
 		URLConnection conn = u.openConnection();
-		conn.setRequestProperty ("Authorization", "Bearer " + GH_AUTH_TOKEN);
 
 		conn.setRequestProperty("User-Agent", USER_AGENT);
 
@@ -447,7 +434,6 @@ public class Launcher
 			Gson g = new Gson();
 			return g.fromJson(new InputStreamReader(new ByteArrayInputStream(bytes)), Bootstrap.class);
 		} catch (Exception e) {
-			GH_AUTH_TOKEN = requestGitHubAuthToken();
 			return getBootstrap();
 		}
 	}
@@ -512,9 +498,6 @@ public class Launcher
 
 			URL url = new URL(artifact.getPath());
 			URLConnection conn = url.openConnection();
-			if (artifact.getPath().contains("unethicalite")) {
-				conn.setRequestProperty ("Authorization", "Bearer " + GH_AUTH_TOKEN);
-			}
 			conn.setRequestProperty("User-Agent", USER_AGENT);
 			try (InputStream in = conn.getInputStream();
 				FileOutputStream fout = new FileOutputStream(dest))
@@ -634,20 +617,4 @@ public class Launcher
 
 		});
 	}
-
-	public static String requestGitHubAuthToken() {
-		JFrame tokenInputFrame = new JFrame();
-		String s = (String)JOptionPane.showInputDialog(
-				tokenInputFrame,
-				"GitHub Token:",
-				"GitHub Token",
-				JOptionPane.PLAIN_MESSAGE,
-				null,
-				null,
-				"token123"
-		);
-		tokenInputFrame.dispose();
-		return s;
-	}
-
 }
