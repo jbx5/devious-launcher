@@ -53,7 +53,7 @@ class MessagePanel extends JPanel
 	private static final Dimension BAR_SIZE = new Dimension(PANEL_SIZE.width, 30);
 	private static final int MESSAGE_AREA_PADDING = 15;
 
-	private final JLabel titleLabel = new JLabel("Welcome to OpenOSRS");
+	private final JLabel titleLabel = new JLabel("Unethicalite Launcher");
 	private final JLabel messageArea;
 	private final JLabel bootstrapChannel;
 	private final JLabel barLabel = new JLabel("Doing something important");
@@ -116,7 +116,8 @@ class MessagePanel extends JPanel
 		stableBtn = addButton("Stable", "The Stable option isn't the most up-to-date build, it will use the most stable OpenOSRS build.");
 		buttonPanel.add(stableBtn);
 
-		nightlyBtn = addButton("Nightly", "The Nightly option is the most up-to-date build, it will use the latest OpenOSRS build which is built each night.");
+		nightlyBtn = addButton("Nightly", "The Nightly option is the most up-to-date build, it will use the latest " +
+				"Unethicalite build which is built each night.");
 		buttonPanel.add(nightlyBtn);
 
 		bootstrapChannel.setVisible(false);

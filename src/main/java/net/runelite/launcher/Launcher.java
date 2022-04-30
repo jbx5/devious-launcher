@@ -493,7 +493,8 @@ public class Launcher
 			final boolean postInstall = options.has("postinstall");
 			if (!postInstall)
 			{
-				OpenOSRSSplashScreen.setError("Error during startup!", "OpenOSRS has encountered an unexpected error during startup, please check your log files for a more detailed error message.");
+				OpenOSRSSplashScreen.setError("Error during startup!", "Unethicalite has encountered an unexpected " +
+						"error during startup, please check your log files for a more detailed error message.");
 			}
 		}
 		catch (Error e)
