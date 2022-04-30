@@ -75,10 +75,11 @@ public class Launcher
 	public static final File LOGS_DIR = new File(OPENOSRS_DIR, "logs");
 	private static final File REPO_DIR = new File(OPENOSRS_DIR, "repository2");
 	public static final File CRASH_FILES = new File(LOGS_DIR, "jvm_crash_pid_%p.log");
-	static final String LAUNCHER_BUILD = "https://raw.githubusercontent.com/open-osrs/launcher/master/build.gradle.kts";
-	private static final String CLIENT_BOOTSTRAP_STAGING_URL = "https://raw.githubusercontent.com/open-osrs/hosting/master/bootstrap-staging.json";
-	private static final String CLIENT_BOOTSTRAP_NIGHTLY_URL = "https://raw.githubusercontent.com/open-osrs/hosting/master/bootstrap-nightly.json";
-	private static final String CLIENT_BOOTSTRAP_STABLE_URL = "https://raw.githubusercontent.com/open-osrs/hosting/master/bootstrap-stable.json";
+	static final String LAUNCHER_BUILD = "https://raw.githubusercontent.com/unethicalite/launcher/master/build.gradle" +
+			".kts";
+	private static final String CLIENT_BOOTSTRAP_STAGING_URL = "https://raw.githubusercontent.com/unethicalite/hosting/master/bootstrap-staging.json";
+	private static final String CLIENT_BOOTSTRAP_NIGHTLY_URL = "https://raw.githubusercontent.com/unethicalite/hosting/master/bootstrap-nightly.json";
+	private static final String CLIENT_BOOTSTRAP_STABLE_URL = "https://raw.githubusercontent.com/unethicalite/hosting/master/bootstrap-stable.json";
 	static final String USER_AGENT = "OpenOSRS/" + LauncherProperties.getVersion();
 	private static boolean nightly = false;
 	private static boolean staging = false;
