@@ -63,7 +63,7 @@ class MessagePanel extends JPanel
 	private final JScrollPane scrollPane;
 	private final JPanel buttonPanel;
 	private final JButton stableBtn;
-	private final JButton nightlyBtn;
+	private final JButton snapshotBtn;
 
 	MessagePanel()
 	{
@@ -102,7 +102,8 @@ class MessagePanel extends JPanel
 		this.add(scrollPane, c);
 		c.gridy++;
 
-		bootstrapChannel = messageArea("Do you want to make use of the stable or the nightly update channel?");
+		bootstrapChannel = messageArea("Would you like to launch the Stable or Snapshot version? Snapshot has " +
+				"the latest features, but may also contain bugs.");
 
 		this.add(bootstrapChannel, c);
 		c.gridy++;
@@ -116,9 +117,9 @@ class MessagePanel extends JPanel
 		stableBtn = addButton("Stable", "The Stable option isn't the most up-to-date build, it will use the most stable OpenOSRS build.");
 		buttonPanel.add(stableBtn);
 
-		nightlyBtn = addButton("Nightly", "The Nightly option is the most up-to-date build, it will use the latest " +
-				"Unethicalite build which is built each night.");
-		buttonPanel.add(nightlyBtn);
+		snapshotBtn = addButton("Snapshot (unstable)", "The Snapshot option is the most up-to-date build, it will use the latest " +
+				"Unethicalite build.");
+		buttonPanel.add(snapshotBtn);
 
 		bootstrapChannel.setVisible(false);
 		buttonPanel.setVisible(false);
@@ -222,6 +223,6 @@ class MessagePanel extends JPanel
 		titleLabel.revalidate();
 		titleLabel.repaint();
 
-		return Arrays.asList(stableBtn, nightlyBtn);
+		return Arrays.asList(stableBtn, snapshotBtn);
 	}
 }

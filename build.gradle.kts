@@ -124,7 +124,7 @@ tasks {
     }
 
     shadowJar {
-        archiveName = "OpenOSRS-shaded.jar"
+        archiveName = "unethicalite-launcher-${project.version}.jar"
         exclude("net/runelite/injector/**")
     }
 }

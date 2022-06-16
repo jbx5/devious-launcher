@@ -78,10 +78,10 @@ public class Launcher
 	static final String LAUNCHER_BUILD = "https://raw.githubusercontent.com/unethicalite/launcher/master/build.gradle" +
 			".kts";
 	private static final String CLIENT_BOOTSTRAP_STAGING_URL = "https://raw.githubusercontent.com/unethicalite/hosting/master/bootstrap-staging.json";
-	private static final String CLIENT_BOOTSTRAP_NIGHTLY_URL = "https://raw.githubusercontent.com/unethicalite/hosting/master/bootstrap-nightly.json";
+	private static final String CLIENT_BOOTSTRAP_SNAPSHOT_URL = "https://raw.githubusercontent.com/unethicalite/hosting/master/bootstrap-nightly.json";
 	private static final String CLIENT_BOOTSTRAP_STABLE_URL = "https://raw.githubusercontent.com/unethicalite/hosting/master/bootstrap-stable.json";
 	static final String USER_AGENT = "OpenOSRS/" + LauncherProperties.getVersion();
-	private static boolean nightly = false;
+	private static boolean snapshot = false;
 	private static boolean staging = false;
 	private static boolean stable = false;
 
@@ -98,7 +98,7 @@ public class Launcher
 		parser.accepts("insecure-skip-tls-verification", "Disable TLS certificate and hostname verification");
 		parser.accepts("use-jre-truststore", "Use JRE cacerts truststore instead of the Windows Trusted Root Certificate Authorities (only on Windows)");
 		parser.accepts("scale", "Custom scale factor for Java 2D").withRequiredArg();
-		parser.accepts("nightly");
+		parser.accepts("snapshot");
 		parser.accepts("staging");
 		parser.accepts("stable");
 		parser.accepts("help", "Show this text (use --clientargs --help for client help)").forHelp();
@@ -185,13 +185,13 @@ public class Launcher
 			{
 				stable = true;
 			}
-			else if (bootstrapMode.equals("NIGHTLY"))
+			else if (bootstrapMode.equals("SNAPSHOT"))
 			{
-				nightly = true;
+				snapshot = true;
 			}
 		}
 
-		nightly |= options.has("nightly");
+		snapshot |= options.has("snapshot");
 		staging = options.has("staging");
 		stable |= options.has("stable");
 
@@ -205,7 +205,7 @@ public class Launcher
 			logger.setLevel(Level.DEBUG);
 		}
 
-		if (!nightly && !staging && !stable)
+		if (!snapshot && !staging && !stable)
 		{
 			OpenOSRSSplashScreen.init(null);
 			OpenOSRSSplashScreen.barMessage(null);
@@ -225,7 +225,7 @@ public class Launcher
 
 				buttons.get(1).addActionListener(e ->
 				{
-					nightly = true;
+					snapshot = true;
 					OpenOSRSSplashScreen.close();
 					Runnable task = () -> launch(hardwareAccelerationMode, options, prop);
 					Thread thread = new Thread(task);
@@ -244,7 +244,7 @@ public class Launcher
 		// RTSS triggers off of the CreateWindow event, so this needs to be in place early, prior to splash screen
 		initDllBlacklist();
 
-		OpenOSRSSplashScreen.init(nightly ? "Nightly" : stable ? "Stable" : "Staging");
+		OpenOSRSSplashScreen.init(snapshot ? "Snapshot" : stable ? "Stable" : "Staging");
 
 		try
 		{
@@ -536,9 +536,9 @@ public class Launcher
 		{
 			u = new URL(CLIENT_BOOTSTRAP_STABLE_URL);
 		}
-		else if (nightly)
+		else if (snapshot)
 		{
-			u = new URL(CLIENT_BOOTSTRAP_NIGHTLY_URL);
+			u = new URL(CLIENT_BOOTSTRAP_SNAPSHOT_URL);
 		}
 		else if (staging)
 		{
