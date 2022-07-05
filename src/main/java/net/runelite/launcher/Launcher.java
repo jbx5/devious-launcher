@@ -85,7 +85,7 @@ public class Launcher
 	private static boolean staging = false;
 	private static boolean stable = false;
 
-	static final String CLIENT_MAIN_CLASS = "net.runelite.client.RuneLite";
+	static final String CLIENT_MAIN_CLASS = "net.unethicalite.client.Unethicalite";
 
 	public static void main(String[] args)
 	{
