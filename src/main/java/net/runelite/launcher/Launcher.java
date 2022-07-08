@@ -75,8 +75,7 @@ public class Launcher
 	public static final File LOGS_DIR = new File(OPENOSRS_DIR, "logs");
 	private static final File REPO_DIR = new File(OPENOSRS_DIR, "repository2");
 	public static final File CRASH_FILES = new File(LOGS_DIR, "jvm_crash_pid_%p.log");
-	static final String LAUNCHER_BUILD = "https://raw.githubusercontent.com/unethicalite/unethicalite-launcher/master/build.gradle" +
-			".kts";
+	static final String LAUNCHER_BUILD = "https://raw.githubusercontent.com/unethicalite/unethicalite-launcher/master/build.gradle.kts";
 	private static final String CLIENT_BOOTSTRAP_STAGING_URL = "https://raw.githubusercontent.com/unethicalite/unethicalite-hosting/master/bootstrap-staging.json";
 	private static final String CLIENT_BOOTSTRAP_SNAPSHOT_URL = "https://raw.githubusercontent.com/unethicalite/unethicalite-hosting/master/bootstrap-snapshot.json";
 	private static final String CLIENT_BOOTSTRAP_STABLE_URL = "https://raw.githubusercontent.com/unethicalite/unethicalite-hosting/master/bootstrap-stable.json";

@@ -1,6 +1,3 @@
-/*
-version = '3.0.0'
-*/
 import org.apache.tools.ant.filters.ReplaceTokens
 
 buildscript {
