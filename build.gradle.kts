@@ -19,8 +19,8 @@ plugins {
     checkstyle
 }
 
-group = "com.openosrs"
-version = "3.0.0"
+group = "net.unethicalite"
+version = "1.0.0"
 description = "OpenOSRS Launcher"
 
 repositories {

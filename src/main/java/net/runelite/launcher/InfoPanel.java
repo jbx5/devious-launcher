@@ -65,7 +65,7 @@ class InfoPanel extends JPanel
 
 	private static final String TROUBLESHOOTING_URL = "https://github.com/runelite/runelite/wiki/Troubleshooting-problems-with-the-client";
 	private static final String DISCORD_INVITE_LINK = "https://discord.gg/unethicalite";
-	private static final String LAUNCHER_DOWNLOAD_LINK = "https://github.com/unethicalite/launcher/releases";
+	private static final String LAUNCHER_DOWNLOAD_LINK = "https://github.com/unethicalite/unethicalite-launcher/releases";
 
 	InfoPanel(String mode)
 	{
