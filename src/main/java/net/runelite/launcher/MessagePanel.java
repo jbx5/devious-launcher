@@ -61,9 +61,10 @@ class MessagePanel extends JPanel
 
 	@Getter(AccessLevel.NONE)
 	private final JScrollPane scrollPane;
+	@Getter
 	private final JPanel buttonPanel;
-	private final JButton stableBtn;
-	private final JButton snapshotBtn;
+//	private final JButton stableBtn;
+//	private final JButton snapshotBtn;
 
 	MessagePanel()
 	{
@@ -114,12 +115,12 @@ class MessagePanel extends JPanel
 		buttonPanel.setBackground(ColorScheme.DARKER_GRAY_COLOR);
 		buttonPanel.setOpaque(true);
 
-		stableBtn = addButton("Stable", "The Stable option isn't the most up-to-date build, it will use the most stable OpenOSRS build.");
-		buttonPanel.add(stableBtn);
+//		stableBtn = addButton("Stable", "The Stable option isn't the most up-to-date build, it will use the most stable OpenOSRS build.");
+//		buttonPanel.add(stableBtn);
 
-		snapshotBtn = addButton("Snapshot (unstable)", "The Snapshot option is the most up-to-date build, it will use the latest " +
-				"Unethicalite build.");
-		buttonPanel.add(snapshotBtn);
+//		snapshotBtn = addButton("Snapshot (unstable)", "The Snapshot option is the most up-to-date build, it will use the latest " +
+//				"Unethicalite build.");
+//		buttonPanel.add(snapshotBtn);
 
 		bootstrapChannel.setVisible(false);
 		buttonPanel.setVisible(false);
@@ -199,7 +200,7 @@ class MessagePanel extends JPanel
 		titleLabel.repaint();
 	}
 
-	private JButton addButton(String action, String tooltip)
+	public JButton addButton(String action, String tooltip)
 	{
 		JButton btn = new JButton(action);
 		btn.setToolTipText(tooltip);
@@ -212,17 +213,17 @@ class MessagePanel extends JPanel
 		btn.setBorder(BorderFactory.createLineBorder(ColorScheme.DARK_GRAY_COLOR));
 		btn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
+		buttonPanel.add(btn);
+
 		return btn;
 	}
 
-	List<JButton> addButtons()
+	void showButtons()
 	{
 		bootstrapChannel.setVisible(true);
 		buttonPanel.setVisible(true);
 
 		titleLabel.revalidate();
 		titleLabel.repaint();
-
-		return Arrays.asList(stableBtn, snapshotBtn);
 	}
 }

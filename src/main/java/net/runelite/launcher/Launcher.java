@@ -47,6 +47,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.cert.X509Certificate;
 import java.util.*;
+import java.util.function.Function;
 import java.util.function.IntConsumer;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -64,8 +65,12 @@ import joptsimple.OptionSet;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.launcher.beans.Artifact;
 import net.runelite.launcher.beans.Bootstrap;
+import net.runelite.launcher.beans.BootstrapMode;
 import net.runelite.launcher.beans.Diff;
 import net.runelite.launcher.beans.Platform;
+import net.runelite.launcher.utils.GitHubUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.kohsuke.github.GHContent;
 import org.slf4j.LoggerFactory;
 
 @Slf4j
@@ -76,18 +81,29 @@ public class Launcher
 	private static final File REPO_DIR = new File(OPENOSRS_DIR, "repository2");
 	public static final File CRASH_FILES = new File(LOGS_DIR, "jvm_crash_pid_%p.log");
 	static final String LAUNCHER_BUILD = "https://raw.githubusercontent.com/unethicalite/unethicalite-launcher/master/build.gradle.kts";
-	private static final String CLIENT_BOOTSTRAP_STAGING_URL = "https://raw.githubusercontent.com/unethicalite/unethicalite-hosting/master/bootstrap-staging.json";
-	private static final String CLIENT_BOOTSTRAP_SNAPSHOT_URL = "https://raw.githubusercontent.com/unethicalite/unethicalite-hosting/master/bootstrap-snapshot.json";
-	private static final String CLIENT_BOOTSTRAP_STABLE_URL = "https://raw.githubusercontent.com/unethicalite/unethicalite-hosting/master/bootstrap-stable.json";
-	static final String USER_AGENT = "OpenOSRS/" + LauncherProperties.getVersion();
-	private static boolean snapshot = false;
-	private static boolean staging = false;
-	private static boolean stable = false;
+	static final String USER_AGENT = "Unethicalite/" + LauncherProperties.getVersion();
 
 	static final String CLIENT_MAIN_CLASS = "net.unethicalite.client.Unethicalite";
 
-	public static void main(String[] args)
+	public static void main(String[] args) throws IOException
 	{
+		List<GHContent> repoContent = GitHubUtils.getRepo().getDirectoryContent("/");
+		Map<String, BootstrapMode> availableBootstraps = repoContent.stream()
+				.filter(f -> f.getName().startsWith("bootstrap-"))
+				.map(f ->
+				{
+					try
+					{
+						return new BootstrapMode(f.getName().replaceAll("bootstrap-", "")
+								.replaceAll(".json", ""), f.getDownloadUrl());
+					}
+					catch (IOException e)
+					{
+						throw new RuntimeException(e);
+					}
+				})
+				.collect(Collectors.toMap(BootstrapMode::getMode, Function.identity()));
+
 		OptionParser parser = new OptionParser(false);
 		parser.allowsUnrecognizedOptions();
 		parser.accepts("postinstall", "Perform post-install tasks");
@@ -97,10 +113,9 @@ public class Launcher
 		parser.accepts("insecure-skip-tls-verification", "Disable TLS certificate and hostname verification");
 		parser.accepts("use-jre-truststore", "Use JRE cacerts truststore instead of the Windows Trusted Root Certificate Authorities (only on Windows)");
 		parser.accepts("scale", "Custom scale factor for Java 2D").withRequiredArg();
-		parser.accepts("snapshot");
-		parser.accepts("staging");
-		parser.accepts("stable");
 		parser.accepts("help", "Show this text (use --clientargs --help for client help)").forHelp();
+
+		availableBootstraps.values().forEach(b -> parser.accepts(b.getMode(), b.getMode() + " version."));
 
 		if (OS.getOs() == OS.OSType.MacOS)
 		{
@@ -119,7 +134,7 @@ public class Launcher
 		}
 
 		boolean askmode = Optional.ofNullable(prop.getProperty("openosrs.askMode")).map(Boolean::valueOf).orElse(true);
-		String bootstrapMode = prop.getProperty("openosrs.bootstrapMode");
+		String bootstrapModeProp = prop.getProperty("openosrs.bootstrapMode");
 		boolean disableHw = Boolean.parseBoolean(prop.getProperty("openosrs.disableHw"));
 
 		HardwareAccelerationMode defaultMode;
@@ -175,24 +190,24 @@ public class Launcher
 			{
 				log.error(null, e);
 			}
+
 			System.exit(0);
 		}
 
+		String selectedBootstrap = null;
+
 		if (!askmode)
 		{
-			if (bootstrapMode.equals("STABLE"))
-			{
-				stable = true;
-			}
-			else if (bootstrapMode.equals("SNAPSHOT"))
-			{
-				snapshot = true;
-			}
+			selectedBootstrap = bootstrapModeProp.toLowerCase(Locale.ROOT);
 		}
 
-		snapshot |= options.has("snapshot");
-		staging = options.has("staging");
-		stable |= options.has("stable");
+		for (BootstrapMode bootstrapMode : availableBootstraps.values())
+		{
+			if (options.has(bootstrapMode.getMode()))
+			{
+				selectedBootstrap = bootstrapMode.getMode();
+			}
+		}
 
 		// Setup debug
 		final boolean isDebug = options.has("debug");
@@ -204,46 +219,41 @@ public class Launcher
 			logger.setLevel(Level.DEBUG);
 		}
 
-		if (!snapshot && !staging && !stable)
+		if (selectedBootstrap == null || availableBootstraps.get(selectedBootstrap) == null)
 		{
 			OpenOSRSSplashScreen.init(null);
 			OpenOSRSSplashScreen.barMessage(null);
 			OpenOSRSSplashScreen.message(null);
-			List<JButton> buttons = OpenOSRSSplashScreen.addButtons();
 
-			if (buttons != null)
+			for (BootstrapMode bootstrapMode : availableBootstraps.values())
 			{
-				buttons.get(0).addActionListener(e ->
+				JButton button = OpenOSRSSplashScreen.addButton(StringUtils.capitalize(bootstrapMode.getMode()));
+				if (button != null)
 				{
-					stable = true;
-					OpenOSRSSplashScreen.close();
-					Runnable task = () -> launch(hardwareAccelerationMode, options, prop);
-					Thread thread = new Thread(task);
-					thread.start();
-				});
-
-				buttons.get(1).addActionListener(e ->
-				{
-					snapshot = true;
-					OpenOSRSSplashScreen.close();
-					Runnable task = () -> launch(hardwareAccelerationMode, options, prop);
-					Thread thread = new Thread(task);
-					thread.start();
-				});
+					button.addActionListener(e ->
+					{
+						OpenOSRSSplashScreen.close();
+						Runnable task = () -> launch(hardwareAccelerationMode, options, prop, bootstrapMode);
+						Thread thread = new Thread(task);
+						thread.start();
+					});
+				}
 			}
+
+			OpenOSRSSplashScreen.showButtons();
 		}
 		else
 		{
-			launch(hardwareAccelerationMode, options, prop);
+			launch(hardwareAccelerationMode, options, prop, availableBootstraps.get(selectedBootstrap));
 		}
 	}
 
-	private static void launch(HardwareAccelerationMode mode, OptionSet options, Properties prop)
+	private static void launch(HardwareAccelerationMode mode, OptionSet options, Properties prop, BootstrapMode bootstrapMode)
 	{
 		// RTSS triggers off of the CreateWindow event, so this needs to be in place early, prior to splash screen
 		initDllBlacklist();
 
-		OpenOSRSSplashScreen.init(snapshot ? "Snapshot" : stable ? "Stable" : "Staging");
+		OpenOSRSSplashScreen.init(bootstrapMode.getMode());
 
 		try
 		{
@@ -314,7 +324,7 @@ public class Launcher
 
 			if (postInstall)
 			{
-				postInstall(jvmParams);
+				postInstall(jvmParams, bootstrapMode);
 				return;
 			}
 
@@ -337,7 +347,7 @@ public class Launcher
 			Bootstrap bootstrap;
 			try
 			{
-				bootstrap = getBootstrap();
+				bootstrap = getBootstrap(bootstrapMode);
 			}
 			catch (IOException ex)
 			{
@@ -528,25 +538,9 @@ public class Launcher
 		}
 	}
 
-	private static Bootstrap getBootstrap() throws IOException
+	private static Bootstrap getBootstrap(BootstrapMode bootstrapMode) throws IOException
 	{
-		URL u;
-		if (stable)
-		{
-			u = new URL(CLIENT_BOOTSTRAP_STABLE_URL);
-		}
-		else if (snapshot)
-		{
-			u = new URL(CLIENT_BOOTSTRAP_SNAPSHOT_URL);
-		}
-		else if (staging)
-		{
-			u = new URL(CLIENT_BOOTSTRAP_STAGING_URL);
-		}
-		else
-		{
-			throw new RuntimeException("How did we get here?");
-		}
+		URL u = new URL(bootstrapMode.getJsonUrl());
 
 		log.info(String.valueOf(u));
 
@@ -838,12 +832,12 @@ public class Launcher
 		HttpsURLConnection.setDefaultHostnameVerifier((hostname, session) -> true);
 	}
 
-	private static void postInstall(List<String> jvmParams)
+	private static void postInstall(List<String> jvmParams, BootstrapMode bootstrapMode)
 	{
 		Bootstrap bootstrap;
 		try
 		{
-			bootstrap = getBootstrap();
+			bootstrap = getBootstrap(bootstrapMode);
 		}
 		catch (IOException ex)
 		{

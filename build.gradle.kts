@@ -17,7 +17,7 @@ plugins {
 }
 
 group = "net.unethicalite"
-version = "1.0.0"
+version = "1.0.1"
 description = "OpenOSRS Launcher"
 
 repositories {
@@ -51,6 +51,8 @@ dependencies {
     implementation(group = "com.vdurmont", name = "semver4j", version = "3.1.0")
 
     testImplementation(group = "junit", name = "junit", version = "4.12")
+
+    implementation("org.kohsuke:github-api:1.306")
 }
 
 configure<CheckstyleExtension> {

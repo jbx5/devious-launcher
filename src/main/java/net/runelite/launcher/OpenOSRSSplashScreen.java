@@ -39,10 +39,10 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class OpenOSRSSplashScreen extends JFrame
 {
+	@Getter
 	private static OpenOSRSSplashScreen INSTANCE;
 	static final Dimension FRAME_SIZE = new Dimension(600, 350);
 
-	@Getter
 	private final MessagePanel messagePanel = new MessagePanel();
 
 	private OpenOSRSSplashScreen(String mode)
@@ -68,7 +68,7 @@ public class OpenOSRSSplashScreen extends JFrame
 		this.setVisible(true);
 	}
 
-	static void setError(String title, String content)
+	public static void setError(String title, String content)
 	{
 		if (INSTANCE != null)
 		{
@@ -109,7 +109,7 @@ public class OpenOSRSSplashScreen extends JFrame
 		this.getContentPane().repaint();
 	}
 
-	static void init(String mode)
+	public static void init(String mode)
 	{
 		try
 		{
@@ -202,11 +202,19 @@ public class OpenOSRSSplashScreen extends JFrame
 		}
 	}
 
-	static List<JButton> addButtons()
+	static void showButtons()
 	{
 		if (INSTANCE != null)
 		{
-			return INSTANCE.messagePanel.addButtons();
+			INSTANCE.messagePanel.showButtons();
+		}
+	}
+
+	static JButton addButton(String name)
+	{
+		if (INSTANCE != null)
+		{
+			return INSTANCE.messagePanel.addButton(name, "");
 		}
 
 		return null;
