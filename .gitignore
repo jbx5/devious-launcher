@@ -69,3 +69,6 @@ native-osx-aarch64/
 native-osx/
 native-win32/
 native-win64/
+
+vcredist_x64.exe
+vcredist_x86.exe

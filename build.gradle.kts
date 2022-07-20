@@ -18,7 +18,7 @@ plugins {
 
 group = "net.unethicalite"
 version = "1.0.1"
-description = "OpenOSRS Launcher"
+description = "Unethicalite Launcher"
 
 repositories {
     mavenLocal()
@@ -79,11 +79,11 @@ tasks {
     processResources {
         val tokens = mapOf(
                 "basedir"         to project.projectDir.path,
-                "finalName"       to "OpenOSRS",
+                "finalName"       to "Unethicalite",
                 "artifact"        to "launcher",
                 "project.version" to project.version,
                 "project.group"   to project.group,
-                "description"     to "OpenOSRS launcher"
+                "description"     to "Unethicalite launcher"
         )
 
         doLast {
@@ -92,11 +92,11 @@ tasks {
                     include("Info.plist")
                 }
                 from("${rootDir}/innosetup") {
-                    include("openosrs.iss")
-                    include("openosrs32.iss")
+                    include("unethicalite.iss")
+                    include("unethicalite32.iss")
                 }
                 from("${rootDir}/appimage") {
-                    include("openosrs.desktop")
+                    include("unethicalite.desktop")
                 }
                 into("${buildDir}/filtered-resources/")
 
@@ -123,7 +123,7 @@ tasks {
     }
 
     shadowJar {
-        archiveName = "unethicalite-launcher-${project.version}.jar"
+        archiveName = "Unethicalite-shaded.jar"
         exclude("net/runelite/injector/**")
     }
 }

@@ -1,0 +1,20 @@
+{
+    "platform": "linuxaarch64",
+    "jdk": "linux-aarch64-jdk",
+    "executable": "Unethicalite",
+    "classpath": [
+        "build/libs/Unethicalite-shaded.jar"
+    ],
+    "mainclass": "net.runelite.launcher.Launcher",
+    "vmargs": [
+       "-Drunelite.launcher.nojvm=true",
+       "-Xmx512m",
+       "-Xss2m",
+       "-XX:CompileThreshold=1500"
+    ],
+    "output": "native-linux/Unethicalite.AppDir/",
+    "resources": [
+      "build/filtered-resources/unethicalite.desktop",
+      "appimage/unethicalite.png"
+    ]
+}

@@ -51,7 +51,7 @@ public class OpenOSRSSplashScreen extends JFrame
 		this.setSize(FRAME_SIZE);
 		this.setLayout(new BorderLayout());
 		this.setUndecorated(true);
-		this.setIconImage(ImageUtil.getResourceStreamFromClass(OpenOSRSSplashScreen.class, "openosrs.png"));
+		this.setIconImage(ImageUtil.getResourceStreamFromClass(OpenOSRSSplashScreen.class, "unethicalite.png"));
 
 		final JPanel panel = new JPanel();
 		panel.setLayout(new BorderLayout());

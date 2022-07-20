@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=Unethicalite
+Comment=Open-source OldSchool RuneScape client with more functionality and less restrictions
+Exec=unethicalite
+Icon=${SNAP}/meta/gui/unethicalite.png
+Type=Application
+Categories=Game;
+StartupNotify=false
+Keywords=rs;osrs;old;school;runescape
