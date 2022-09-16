@@ -29,7 +29,7 @@ public class GitHubUtils
 	{
 		try
 		{
-			return GITHUB.getRepository("unethicalite/unethicalite-hosting");
+			return GITHUB.getRepository("jbx5/devious-hosting");
 		}
 		catch (IOException e)
 		{
