@@ -1,9 +1,9 @@
 {
     "platform": "linux64",
     "jdk": "linux-jdk",
-    "executable": "Unethicalite",
+    "executable": "Devious",
     "classpath": [
-        "build/libs/Unethicalite-shaded.jar"
+        "build/libs/Devious-shaded.jar"
     ],
     "mainclass": "net.runelite.launcher.Launcher",
     "vmargs": [
@@ -12,7 +12,7 @@
        "-Xss2m",
        "-XX:CompileThreshold=1500"
     ],
-    "output": "native-linux-x86_64/Unethicalite.AppDir/",
+    "output": "native-linux-x86_64/Devious.AppDir/",
     "resources": [
       "build/filtered-resources/unethicalite.desktop",
       "appimage/unethicalite.png"

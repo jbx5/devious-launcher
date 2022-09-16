@@ -18,7 +18,7 @@ plugins {
 
 group = "net.unethicalite"
 version = "1.0.1"
-description = "Unethicalite Launcher"
+description = "Devious Launcher"
 
 repositories {
     mavenLocal()
@@ -79,11 +79,11 @@ tasks {
     processResources {
         val tokens = mapOf(
                 "basedir"         to project.projectDir.path,
-                "finalName"       to "Unethicalite",
+                "finalName"       to "Devious",
                 "artifact"        to "launcher",
                 "project.version" to project.version,
                 "project.group"   to project.group,
-                "description"     to "Unethicalite launcher"
+                "description"     to "Devious launcher"
         )
 
         doLast {
@@ -123,7 +123,7 @@ tasks {
     }
 
     shadowJar {
-        archiveName = "Unethicalite-shaded.jar"
+        archiveName = "Devious-shaded.jar"
         exclude("net/runelite/injector/**")
     }
 }

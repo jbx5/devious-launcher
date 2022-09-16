@@ -34,16 +34,16 @@ java -jar packr_${PACKR_VERSION}.jar \
 
 # modify packr exe manifest to enable Windows dpi scaling
 "C:/Program Files (x86)/Resource Hacker/ResourceHacker.exe" \
-    -open native-win32/Unethicalite.exe \
-    -save native-win32/Unethicalite.exe \
+    -open native-win32/Devious.exe \
+    -save native-win32/Devious.exe \
     -action addoverwrite \
     -res packr/unethicalite.manifest \
     -mask MANIFEST,1,
 
 # packr on Windows doesn't support icons, so we use resourcehacker to include it
 "C:/Program Files (x86)/Resource Hacker/ResourceHacker.exe" \
-    -open native-win32/Unethicalite.exe \
-    -save native-win32/Unethicalite.exe \
+    -open native-win32/Devious.exe \
+    -save native-win32/Devious.exe \
     -action add \
     -res unethicalite.ico \
     -mask ICONGROUP,MAINICON,

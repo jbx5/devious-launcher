@@ -1,9 +1,9 @@
 {
   "platform": "windows64",
   "jdk": "win64-jdk",
-  "executable": "Unethicalite",
+  "executable": "Devious",
   "classpath": [
-    "build/libs/Unethicalite-shaded.jar"
+    "build/libs/Devious-shaded.jar"
   ],
   "mainclass": "net.runelite.launcher.Launcher",
   "vmargs": [

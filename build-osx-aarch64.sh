@@ -47,21 +47,21 @@ echo "f51577b005a51331b822a18122ce08fca58cf6fee91f071d5a16354815bbe1e3  packr_${
 java -jar packr_${PACKR_VERSION}.jar \
 	packr/macos-aarch64-config.json
 
-cp build/filtered-resources/Info.plist native-osx-aarch64/Unethicalite.app/Contents
+cp build/filtered-resources/Info.plist native-osx-aarch64/Devious.app/Contents
 
-echo Setting world execute permissions on Unethicalite
-pushd native-osx-aarch64/Unethicalite.app
-chmod g+x,o+x Contents/MacOS/Unethicalite
+echo Setting world execute permissions on Devious
+pushd native-osx-aarch64/Devious.app
+chmod g+x,o+x Contents/MacOS/Devious
 popd
 
-codesign -f -s "${SIGNING_IDENTITY}" --entitlements osx/signing.entitlements --options runtime native-osx-aarch64/Unethicalite.app || true
+codesign -f -s "${SIGNING_IDENTITY}" --entitlements osx/signing.entitlements --options runtime native-osx-aarch64/Devious.app || true
 
 # create-dmg exits with an error code due to no code signing, but is still okay
-create-dmg native-osx-aarch64/Unethicalite.app native-osx-aarch64/ || true
+create-dmg native-osx-aarch64/Devious.app native-osx-aarch64/ || true
 
-mv native-osx-aarch64/Unethicalite\ *.dmg native-osx-aarch64/Unethicalite-aarch64.dmg
+mv native-osx-aarch64/Devious\ *.dmg native-osx-aarch64/Devious-aarch64.dmg
 
 # Notarize app
-if xcrun notarytool submit native-osx-aarch64/Unethicalite-aarch64.dmg --wait --keychain-profile "AC_PASSWORD" ; then
-    xcrun stapler staple native-osx-aarch64/Unethicalite-aarch64.dmg
+if xcrun notarytool submit native-osx-aarch64/Devious-aarch64.dmg --wait --keychain-profile "AC_PASSWORD" ; then
+    xcrun stapler staple native-osx-aarch64/Devious-aarch64.dmg
 fi

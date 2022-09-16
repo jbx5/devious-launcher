@@ -1,6 +1,6 @@
 name: unethicalite
 base: core20
-title: Unethicalite
+title: Devious
 version: git
 summary: Open-source OSRS client with more functionality and less restrictions
 description: |
@@ -33,8 +33,8 @@ parts:
       - libnotify-bin
     override-pull: |
       snapcraftctl pull
-      find . -not -name 'Unethicalite-shaded.jar' -delete
-      if [ ! -f Unethicalite-shaded.jar ]
+      find . -not -name 'Devious-shaded.jar' -delete
+      if [ ! -f Devious-shaded.jar ]
       then
         echo "Run gradle prior to running snapcraft!"
         exit 1
@@ -65,7 +65,7 @@ layout:
 
 apps:
   unethicalite:
-    command: bin/java -jar $SNAP/Unethicalite-shaded.jar
+    command: bin/java -jar $SNAP/Devious-shaded.jar
     plugs:
       - desktop
       - desktop-legacy

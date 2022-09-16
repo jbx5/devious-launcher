@@ -2,9 +2,9 @@
     "platform": "mac64",
     "icon": "packr/unethicalite.icns",
     "jdk": "osx-jdk",
-    "executable": "Unethicalite",
+    "executable": "Devious",
     "classpath": [
-        "build/libs/Unethicalite-shaded.jar"
+        "build/libs/Devious-shaded.jar"
     ],
     "mainclass": "net.runelite.launcher.Launcher",
     "vmargs": [
@@ -13,5 +13,5 @@
        "-Xss2m",
        "-XX:CompileThreshold=1500"
     ],
-    "output": "native-osx/Unethicalite.app"
+    "output": "native-osx/Devious.app"
 }

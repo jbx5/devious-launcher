@@ -81,9 +81,9 @@ public class Launcher
 	private static final File REPO_DIR = new File(OPENOSRS_DIR, "repository2");
 	public static final File CRASH_FILES = new File(LOGS_DIR, "jvm_crash_pid_%p.log");
 	static final String LAUNCHER_BUILD = "https://raw.githubusercontent.com/unethicalite/unethicalite-launcher/master/build.gradle.kts";
-	static final String USER_AGENT = "Unethicalite/" + LauncherProperties.getVersion();
+	static final String USER_AGENT = "Devious/" + LauncherProperties.getVersion();
 
-	static final String CLIENT_MAIN_CLASS = "net.unethicalite.client.Unethicalite";
+	static final String CLIENT_MAIN_CLASS = "net.unethicalite.client.Devious";
 
 	public static void main(String[] args) throws IOException
 	{
@@ -502,7 +502,7 @@ public class Launcher
 			final boolean postInstall = options.has("postinstall");
 			if (!postInstall)
 			{
-				OpenOSRSSplashScreen.setError("Error during startup!", "Unethicalite has encountered an unexpected " +
+				OpenOSRSSplashScreen.setError("Error during startup!", "Devious has encountered an unexpected " +
 						"error during startup, please check your log files for a more detailed error message.");
 			}
 		}
@@ -795,7 +795,7 @@ public class Launcher
 		HashCode hashCode = hout.hash();
 		if (!hash.equals(hashCode.toString()))
 		{
-			throw new VerificationException("Unable to verify resource " + path + " - expected " + hash + " got " + hashCode.toString());
+			throw new VerificationException("Unable to verify resource " + path + " - expected " + hash + " got " + hashCode);
 		}
 	}
 

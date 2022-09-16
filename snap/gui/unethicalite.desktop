@@ -1,5 +1,5 @@
 [Desktop Entry]
-Name=Unethicalite
+Name=Devious
 Comment=Open-source OldSchool RuneScape client with more functionality and less restrictions
 Exec=unethicalite
 Icon=${SNAP}/meta/gui/unethicalite.png

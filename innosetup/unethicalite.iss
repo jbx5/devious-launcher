@@ -1,10 +1,10 @@
 [Setup]
-AppName=Unethicalite Launcher
-AppPublisher=Unethicalite
-UninstallDisplayName=Unethicalite
+AppName=Devious Launcher
+AppPublisher=Devious
+UninstallDisplayName=Devious
 AppVersion=@project.version@
 AppSupportURL=https://unethicalite.net/
-DefaultDirName={localappdata}\Unethicalite
+DefaultDirName={localappdata}\Devious
 ; vcredist queues files to be replaced at next reboot, however it doesn't seem to matter
 RestartIfNeededByRun=no
 
@@ -15,32 +15,32 @@ PrivilegesRequired=lowest
 
 WizardSmallImageFile=@basedir@/innosetup/unethicalite_small.bmp
 SetupIconFile=@basedir@/unethicalite.ico
-UninstallDisplayIcon={app}\Unethicalite.exe
+UninstallDisplayIcon={app}\Devious.exe
 
 Compression=lzma2
 SolidCompression=yes
 
 OutputDir=@basedir@
-OutputBaseFilename=UnethicaliteSetup
+OutputBaseFilename=DeviousSetup
 
 [Tasks]
 Name: DesktopIcon; Description: "Create a &desktop icon";
 
 [Files]
-Source: "@basedir@\native-win64\Unethicalite.exe"; DestDir: "{app}"
-Source: "@basedir@\native-win64\Unethicalite-shaded.jar"; DestDir: "{app}"
+Source: "@basedir@\native-win64\Devious.exe"; DestDir: "{app}"
+Source: "@basedir@\native-win64\Devious-shaded.jar"; DestDir: "{app}"
 Source: "@basedir@\native-win64\config.json"; DestDir: "{app}"
 Source: "@basedir@\native-win64\jre\*"; DestDir: "{app}\jre"; Flags: recursesubdirs
 Source: "@basedir@\vcredist_x64.exe"; DestDir: {tmp}; Flags: deleteafterinstall
 
 [Icons]
 ; start menu
-Name: "{userprograms}\Unethicalite"; Filename: "{app}\Unethicalite.exe"
-Name: "{userdesktop}\Unethicalite"; Filename: "{app}\Unethicalite.exe"; Tasks: DesktopIcon
+Name: "{userprograms}\Devious"; Filename: "{app}\Devious.exe"
+Name: "{userdesktop}\Devious"; Filename: "{app}\Devious.exe"; Tasks: DesktopIcon
 
 [Run]
 Filename: "{tmp}\vcredist_x64.exe"; Check: VCRedistNeedsInstall; Parameters: "/install /quiet /norestart"; StatusMsg: "Installing VC++ 2015 (x64) Redistributables..."
-Filename: "{app}\Unethicalite.exe"; Description: "&Open Unethicalite"; Flags: postinstall skipifsilent nowait
+Filename: "{app}\Devious.exe"; Description: "&Open Devious"; Flags: postinstall skipifsilent nowait
 
 [InstallDelete]
 ; Delete the old jvm so it doesn't try to load old stuff with the new vm and crash

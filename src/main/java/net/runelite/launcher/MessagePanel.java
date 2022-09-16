@@ -117,7 +117,7 @@ class MessagePanel extends JPanel
 //		buttonPanel.add(stableBtn);
 
 //		snapshotBtn = addButton("Snapshot (unstable)", "The Snapshot option is the most up-to-date build, it will use the latest " +
-//				"Unethicalite build.");
+//				"Devious build.");
 //		buttonPanel.add(snapshotBtn);
 
 		bootstrapChannel.setVisible(false);

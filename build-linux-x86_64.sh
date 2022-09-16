@@ -34,20 +34,20 @@ echo "f200fb7088dbb5e61e0835fe7b0d7fc1310beda192dacd764927567dcd7c4f0f  packr_${
 # Note: Host umask may have checked out this directory with g/o permissions blank
 chmod -R u=rwX,go=rX appimage
 # ...ditto for the build process
-chmod 644 build/libs/Unethicalite-shaded.jar
+chmod 644 build/libs/Devious-shaded.jar
 
 java -jar packr_${PACKR_VERSION}.jar \
     packr/linux-x64-config.json
 
-pushd native-linux-x86_64/Unethicalite.AppDir
+pushd native-linux-x86_64/Devious.AppDir
 mkdir -p jre/lib/amd64/server/
 ln -s ../../server/libjvm.so jre/lib/amd64/server/ # packr looks for libjvm at this hardcoded path
 
 # Symlink AppRun -> OpenOSRS
-ln -s Unethicalite AppRun
+ln -s Devious AppRun
 
 # Ensure OpenOSRS is executable to all users
-chmod 755 Unethicalite
+chmod 755 Devious
 popd
 
 if ! [ -f appimagetool-x86_64.AppImage ] ; then
@@ -59,5 +59,5 @@ fi
 echo "d918b4df547b388ef253f3c9e7f6529ca81a885395c31f619d9aaf7030499a13  appimagetool-x86_64.AppImage" | sha256sum -c
 
 ./appimagetool-x86_64.AppImage \
-	native-linux-x86_64/Unethicalite.AppDir/ \
-	native-linux-x86_64/Unethicalite.AppImage
+	native-linux-x86_64/Devious.AppDir/ \
+	native-linux-x86_64/Devious.AppImage
