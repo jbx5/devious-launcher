@@ -3,7 +3,7 @@ AppName=Devious Launcher
 AppPublisher=Devious
 UninstallDisplayName=Devious
 AppVersion=@project.version@
-AppSupportURL=https://unethicalite.net/
+AppSupportURL=https://runelite.net/
 DefaultDirName={localappdata}\Devious
 ; vcredist queues files to be replaced at next reboot, however it doesn't seem to matter
 RestartIfNeededByRun=no
